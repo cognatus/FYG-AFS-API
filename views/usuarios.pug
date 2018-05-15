@@ -1,0 +1,119 @@
+extends navbar
+
+block content
+    .users-container(ng-controller="usuarios", ng-init="getUsers(1)")
+        ul.nav.nav-tabs.file-form
+            li(ng-class="adm", ng-click="getUsers(1)")
+                a(href='#') Admins
+            li(ng-class="pdf", ng-click="getUsers(2)")
+                a(href='#') Prevencion de fraudes
+            li(ng-class="pdl", ng-click="getUsers(3)")
+                a(href='#') Prevencion de lavado de dinero
+        .card.container.card-form
+            .card-body
+                .row
+                    .col-sm-3(style='border: 1px solid;')
+                        br
+                        p 
+                            button.btn.btn-danger.btn-lg(ng-click="prepareAdd()") Agregar
+                        p(ng-repeat="usua in usuarios", ng-click="showUser(usua)")
+                            a(href="") {{usua.nombres}}
+                    .col-sm-9(style='border: 1px solid;')
+                        form.form-horizontal(ng-if="!add", ng-submit="updateUser(usuario)")
+                            h3 Clave: {{usuario.clave}}
+                            .form-group
+                                label.control-label.col-sm-2(for='nombres') Nombres:
+                                .col-sm-10
+                                    input#nombres.form-control(type='text', placeholder='Nombres', name='nombres', ng-model="usuario.nombres")
+                            .form-group
+                                label.control-label.col-sm-2(for='apellido_paterno') Apellido Paterno:
+                                .col-sm-10
+                                    input#apellido_paterno.form-control(type='text', placeholder='Apellido Paterno', name='apellido_paterno', ng-model="usuario.apellido_paterno")
+                            .form-group
+                                label.control-label.col-sm-2(for='apellido_materno') Apellido Materno:
+                                .col-sm-10
+                                    input#apellido_materno.form-control(type='text', placeholder='Apellido Materno', name='apellido_materno', ng-model="usuario.apellido_materno")
+                            .form-group
+                                label.control-label.col-sm-2(for='correo') Correo:
+                                .col-sm-10
+                                    input#correo.form-control(type='text', placeholder='Correo', name='correo', ng-model="usuario.correo")
+                            .form-group
+                                label.control-label.col-sm-2(for='domicilio') Domicilio:
+                                .col-sm-10
+                                    input#domicilio.form-control(type='text', placeholder='Domicilio', name='domicilio', ng-model="usuario.domicilio")
+                            .form-group
+                                label.control-label.col-sm-2(for='edad') Edad:
+                                .col-sm-10
+                                    input#edad.form-control(type='text', placeholder='Edad', name='edad', ng-model="usuario.edad")
+                            .form-group
+                                label.control-label.col-sm-2(for='puesto') Puesto:
+                                .col-sm-10
+                                    input#puesto.form-control(type='text', placeholder='Puesto', name='puesto', ng-model="usuario.puesto")
+                            .form-group
+                                label.control-label.col-sm-2(for='telefono') Telefono:
+                                .col-sm-10
+                                    input#telefono.form-control(type='text', placeholder='Telefono', name='telefono', ng-model="usuario.telefono")
+                            .form-group
+                                label.control-label.col-sm-2(for='sucursal_clave') Clave sucursal:
+                                .col-sm-10
+                                    input#sucursal_clave.form-control(type='text', placeholder='Clave sucursal', name='sucursal_clave', ng-model="usuario.sucursal_clave")
+                            .form-group
+                                .col-sm-offset-2.col-sm-10
+                                    button.btn.btn-default(type='submit') Cambiar
+                                    button.btn.btn-warning(type='button', style="float: right !important;", ng-click="deleteUser(usuario)") Borrar
+                                    
+                        form.form-horizontal(ng-if="add", ng-submit="addUser()")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_clave') Clave:
+                                .col-sm-10
+                                    input#new_clave.form-control(type='text', placeholder='Clave', name='new_clave', ng-model="new_usuario.clave")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_nombres') Nombres:
+                                .col-sm-10
+                                    input#new_nombres.form-control(type='text', placeholder='Nombres', name='new_nombres', ng-model="new_usuario.nombres")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_apellido_paterno') Apellido Paterno:
+                                .col-sm-10
+                                    input#new_apellido_paterno.form-control(type='text', placeholder='Apellido Paterno', name='new_apellido_paterno', ng-model="new_usuario.apellido_paterno")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_apellido_materno') Apellido Materno:
+                                .col-sm-10
+                                    input#new_apellido_materno.form-control(type='text', placeholder='Apellido Materno', name='new_apellido_materno', ng-model="new_usuario.apellido_materno")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_correo') Correo:
+                                .col-sm-10
+                                    input#new_correo.form-control(type='text', placeholder='Correo', name='new_correo', ng-model="new_usuario.correo")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_contrasenia') Contraseña:
+                                .col-sm-10
+                                    input#new_contrasenia.form-control(type='password', placeholder='Contraseña', name='new_contrasenia', ng-model="new_usuario.contrasenia")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_domicilio') Domicilio:
+                                .col-sm-10
+                                    input#new_domicilio.form-control(type='text', placeholder='Domicilio', name='new_domicilio', ng-model="new_usuario.domicilio")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_edad') Edad:
+                                .col-sm-10
+                                    input#new_edad.form-control(type='text', placeholder='Edad', name='new_edad', ng-model="new_usuario.edad")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_puesto') Puesto:
+                                .col-sm-10
+                                    input#new_puesto.form-control(type='text', placeholder='Puesto', name='new_puesto', ng-model="new_usuario.puesto")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_telefono') Telefono:
+                                .col-sm-10
+                                    input#new_telefono.form-control(type='text', placeholder='Telefono', name='new_telefono', ng-model="new_usuario.telefono")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_sucursal_clave') Clave sucursal:
+                                .col-sm-10
+                                    input#new_sucursal_clave.form-control(type='text', placeholder='Clave sucursal', name='new_sucursal_clave', ng-model="new_usuario.sucursal_clave")
+                            .form-group
+                                .col-sm-offset-2.col-sm-10
+                                    button.btn.btn-default(type='submit') Agregar
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/userStyle.css')
+
+block scripts
+    script(src='/javascripts/usersLogic.js')

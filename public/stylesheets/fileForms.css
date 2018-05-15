@@ -1,0 +1,19 @@
+@media screen and (max-width: 800px) {
+    .file-form {
+        width: 90%;
+        margin: auto;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .file-form{
+        width: 70%;
+        margin: auto;
+        min-width: 720px;
+    }
+}
+
+.file-form{
+    border-radius: 10px;
+    margin-top: 24px;
+}

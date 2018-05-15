@@ -1,0 +1,37 @@
+doctype html
+html
+    head
+        title= title
+
+        link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css', integrity='sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4', crossorigin='anonymous')
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+        link(rel='stylesheet', type='text/css', href='/stylesheets/estiloIndex.css')
+
+        block styles
+    
+    body(ng-app="aplicacion")
+        header
+            #headerPagina(ng-controller="navbar", ng-init="define()")
+                .tab
+                    img(src='/images/logo_fyg.jpg', alt='Logo FyG')
+                    button.pageTabs(ng-repeat="opc in menu", ng-click="redirect(opc.url)") {{opc.opc}}
+                    .botonesFA
+                        button#botonConfig(title="Configuraciones", ng-if="usuario.rol === 1", ng-click="redirect('/configuracion')")
+                            i.fas.fa-cog
+                        button#botonBell(title="Notificaciones")
+                            span#contadorNotificaciones
+                                | 1
+                            i.fas.fa-bell
+                        button#botonSalir(title="Cerrar sesion", ng-click="closeSesion()")
+                            i.fas.fa-sign-out-alt
+
+        block content
+
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js')
+        script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-cookies.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+        script(defer='', src='https://use.fontawesome.com/releases/v5.0.10/js/solid.js', integrity='sha384-Q7KAHqDd5trmfsv85beYZBsUmw0lsreFBQZfsEhzUtUn5HhpjVzwY0Aq4z8DY9sA', crossorigin='anonymous')
+        script(defer='', src='https://use.fontawesome.com/releases/v5.0.10/js/fontawesome.js', integrity='sha384-M2FSA4xMm1G9m4CNXM49UcDHeWcDZNucAlz1WVHxohug0Uw1K+IpUhp/Wjg0y6qG', crossorigin='anonymous')
+        script(src='/javascripts/navbarLogic.js')
+        block scripts

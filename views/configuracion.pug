@@ -1,0 +1,48 @@
+extends navbar
+
+block content
+    .card.file-form(ng-controller="files", ng-init="getDirs()")
+        .card-body
+            h2 Subir archivos para ejecucion de ETL
+            br
+            .row
+                .col-sm(ng-repeat="dir in dirs")
+                    h4.card-title Archivos {{dir.rubro}}
+                    form.custom-file
+                        input(type='file', lang='es',file-model = "dir.file")
+                        button(ng-click = "uploadFile(dir)") Subele
+            br
+            br
+            br
+            h2 Administrar direcciones de carpetas para ejecucion de ETL
+            br
+            .etl-dir(ng-repeat="dir in dirs")
+                h4.card-title Direccion de ETL {{dir.rubro}}
+                form.form-horizontal(ng-submit="updateDir(dir)")
+                    .form-group
+                        label.control-label.col-sm-2(for='nuevos') Nuevos:
+                        .col-sm-10
+                            input#nuevos.form-control(type='text', placeholder='Carpeta nuevos', name='nuevos', ng-model="dir.carpeta_recoleccion", value="{{dir.carpeta_recoleccion}}")
+                    .form-group
+                        label.control-label.col-sm-2(for='finalizados') Finalizados:
+                        .col-sm-10
+                            input#finalizados.form-control(type='text', placeholder='Carpeta finalizados', name='finalizados', ng-model="dir.carpeta_finalizados", value="{{dir.carpeta_finalizados}}")
+                    .form-group
+                        label.control-label.col-sm-2(for='fallidos') Fallidos:
+                        .col-sm-10
+                            input#fallidos.form-control(type='text', placeholder='Carpeta fallidos', name='fallidos', ng-model="dir.carpeta_fallidos", value="{{dir.carpeta_fallidos}}")
+                    .form-group
+                        label.control-label.col-sm-2(for='tiempo') Tiempo:
+                        .col-sm-10
+                            input#tiempo.form-control(type='text', placeholder='Tiempo de ejecucion', name='tiempo', ng-model="dir.tiempo_ejecucion", value="{{dir.tiempo_ejecucion}}")
+                    .form-group
+                        .col-sm-offset-2.col-sm-10
+                            button.btn.btn-default(type='submit') Cambiar
+                br
+                br
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+
+block scripts
+    script(src='/javascripts/filesLogic.js')

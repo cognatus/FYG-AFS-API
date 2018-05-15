@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='X-UA-Compatible', content='ie=edge')
+        title Inicio de Sesión
+        script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js')
+        script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-cookies.js')
+        script(src='/javascripts/scriptLogin.js')
+        link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css', integrity='sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4', crossorigin='anonymous')
+        link(rel='stylesheet', type='text/css', href='/stylesheets/estiloLogin.css')
+    body(ng-app="aplicacion")
+        header
+            button.btn(type='button', style='background-color:white;') Registrarse
+        main
+            #cuadroLogin(ng-controller="login")
+                h2 Inicia Sesión
+                form.form-group(ng-submit="loguea()")
+                    input(clsstype='email', ng-model='correo', placeholder='Correo')
+                    input(type='password', ng-model='contrasenia', placeholder='Contraseña')
+                    input.btn(type='submit', value="Inicia Sesion")
+            #cuadroCrearCuenta
+                h2 Inicia Sesión
+                form.form-group(action='')
+        footer
+            a(href='#') Recuperar contraseña
