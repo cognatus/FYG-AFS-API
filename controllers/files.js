@@ -15,6 +15,36 @@ controller.get_dirs = function (req, res, next, sql) {
 
 }
 
+controller.get_files = function (req, res, next, sql) {
+
+    var request = new sql.Request();
+    request.query("SELECT [created_at] ,[archivo] ,[sucursal_clave] ,[rubro] FROM [dbo].[archivos] WHERE sucursal_clave='" + req.query.sucursal_clave + "' and rubro = '" + req.query.rubro + "'", function (err, recordset) {
+        if (err) {
+            console.log(err);
+            res.status(401).send(err);
+        } else {
+            var response = recordset.recordset;
+            res.json(response);
+        }
+    });
+
+}
+
+controller.get_bitacora = function (req, res, next, sql) {
+
+    var request = new sql.Request();
+    request.query("SELECT [created_at], [mensaje], [archivo], [error], [sucursal_clave] FROM [dbo].[bitacora] WHERE sucursal_clave='" + req.query.sucursal_clave + "'", function (err, recordset) {
+        if (err) {
+            console.log(err);
+            res.status(401).send(err);
+        } else {
+            var response = recordset.recordset;
+            res.json(response);
+        }
+    });
+
+}
+
 controller.updateDirs = function (req, res, next, sql) {
 
     var request = new sql.Request();

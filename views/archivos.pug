@@ -1,0 +1,36 @@
+extends navbar
+
+block content
+    .card.file-form(ng-controller="files", ng-init="getFiles(); getDirs()")
+        .card-body
+            .etl-dir
+                h4.card-title Cliente
+                div(ng-if="files.length === 0")
+                    a( href="/configuracion", class="btn btn-info") Agrega archivos
+                div(ng-if="files.length !== 0")
+                    button.btn.btn-info(ng-click="deleteAll()") Borrar todos
+                    button.btn.btn-info Recargar todos
+                table.table.table-striped
+                    thead
+                        tr
+                            th Archivo
+                            th Fecha de subida
+                            th Acciones
+                    tbody
+                        h6 {{files.length}} archivos
+                        tr(ng-repeat="file in files")
+                            td {{file.archivo}}
+                            td {{file.created_at | date : format : short}}
+                            td 
+                                button(ng-click="deleteFile(file)") Borrar
+                                button Recargar
+                        
+
+                br
+                br
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+
+block scripts
+    script(src='/javascripts/filesLogic.js')

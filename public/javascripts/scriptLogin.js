@@ -4,6 +4,7 @@ app.controller("login", function ($scope, $http, $window, $cookies) {
     $scope.correo = "";
     $scope.contrasenia = "";
 
+    //este metodo hace login y guarda la informacion en una cookie
     $scope.loguea = function () {
         $http({
             method: 'POST',

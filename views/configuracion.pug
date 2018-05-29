@@ -3,6 +3,16 @@ extends navbar
 block content
     .card.file-form(ng-controller="files", ng-init="getDirs()")
         .card-body
+            h2 Ejecutar ETL
+            br
+            .row
+                button.btn.btn-info(ng-click="ejecutaETL()") Ejecutar ETL
+                br
+                br
+                h2(ng-if="cargaETL") Cargando...
+            br
+            br
+            br
             h2 Subir archivos para ejecucion de ETL
             br
             .row
@@ -38,6 +48,7 @@ block content
                     .form-group
                         .col-sm-offset-2.col-sm-10
                             button.btn.btn-default(type='submit') Cambiar
+                a(href="/archivos/{{dir.rubro}}") Ver archivos
                 br
                 br
 

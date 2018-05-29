@@ -5,13 +5,16 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
     vm.usuarios = [];
     vm.usuario = {};
     vm.new_usuario = {};
+    //Esta variable muestra entre el formulario regular y el de añadir
     vm.add = false;
 
+    //muetra el usuario en especifico seleccionado
     vm.showUser = function (user) {
         vm.usuario = user;
         vm.add = false;
     }
 
+    //Obtenemos la lista de todos los usuarios vase al rol 
     vm.getUsers = function (rol) {
         vm.userLog = $cookies.getObject('usuario');
         $http({
@@ -25,6 +28,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
             function sucess(data) {
                 vm.usuarios = data.data;
                 vm.usuario = data.data[0];
+                //esto es para poner la clase de active a la parte del diseño
                 switch (rol) {
                     case 1:
                         vm.adm = 'active'; vm.pdf = ''; vm.pdl = '';
@@ -45,6 +49,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
         )
     }
 
+    //para modificar usuarios
     vm.updateUser = function (user) {
         $http({
             method: 'PUT',
@@ -62,6 +67,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
         )
     }
 
+    //para borrar usuarios
     vm.deleteUser = function (user) {
         console.log(user);
         $http({
@@ -72,9 +78,11 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
             function sucess(data) {
                 console.log(data)
                 alert('Usuario eliminado correctamente');
+                //una vez borrado el usuario lo buscamos en la lista y lo quitamos
                 const index = vm.usuarios.indexOf(user);
                 vm.usuarios.splice(index, 1);
                 vm.usuario = vm.usuarios[0];
+                //si se elimino a sí mismo, cerramos su sesion
                 if (vm.userLog.clave === user.clave) {
                     $cookies.remove('usuario');
                     $window.location.href = '/login';
@@ -87,6 +95,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
         )
     }
 
+    //reseteamos el formulario de añadir
     vm.prepareAdd = function () {
         vm.add = true;
         vm.new_usuario.apellido_paterno = "";
@@ -109,6 +118,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
         }
     }
 
+    //metodo para añadir usuario
     vm.addUser = function () {
         $http({
             method: 'POST',
@@ -117,6 +127,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
         }).then(
             function sucess(data) {
                 console.log(data);
+                //lo añadimos a la lista de usuarios actuales
                 vm.usuarios.push(vm.new_usuario);
                 vm.usuario = vm.new_usuario;
                 vm.add = false;
