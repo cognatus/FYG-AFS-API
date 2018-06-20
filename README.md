@@ -6,7 +6,7 @@ Requeriments
 
 -NPM 5.6.0 or stable
 
--MongoDB 3.6.4
+-SQL Server 2017
 
 -Have this repo cloned
 
