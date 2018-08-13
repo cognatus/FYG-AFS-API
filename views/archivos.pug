@@ -4,12 +4,12 @@ block content
     .card.file-form(ng-controller="files", ng-init="getFiles(); getDirs()")
         .card-body
             .etl-dir
-                h4.card-title Cliente
+                h4.card-title
                 div(ng-if="files.length === 0")
                     a( href="/configuracion", class="btn btn-info") Agrega archivos
                 div(ng-if="files.length !== 0")
                     button.btn.btn-info(ng-click="deleteAll()") Borrar todos
-                    button.btn.btn-info Recargar todos
+                    button.btn.btn-info(ng-click="ejecutaETL(true)") ETL
                 table.table.table-striped
                     thead
                         tr
@@ -23,7 +23,6 @@ block content
                             td {{file.created_at | date : format : short}}
                             td 
                                 button(ng-click="deleteFile(file)") Borrar
-                                button Recargar
                         
 
                 br

@@ -1,0 +1,50 @@
+extends navbar
+
+block content
+    .card.file-form(ng-controller="transacciones_detenidas", ng-init="getInfo()")
+        .card-body
+            .etl-dir
+                h4.card-title Transacciones detenidas
+                table.table.table-striped
+                    thead
+                        tr
+                            th #
+                            th TDD
+                            th Transaccion
+                            th Status
+                            th Monto
+                            th Criticidad
+                            th Fecha
+                            th Descripcion
+                            th Acciones
+                    tbody
+                        tr(ng-repeat="transaccion in transacciones")
+                            td {{transaccion.idTransacciones}}
+                            td {{transaccion.Numero_TDD}}
+                            td {{transaccion.nombre_validacion}}
+                            td {{transaccion.Estatus}}
+                            td {{transaccion.Monto}}
+                            td {{transaccion.critizidad}}
+                            td {{transaccion.Fecha_informacion}}
+                            td {{transaccion.Descripcion}}  
+                            td 
+                                button#acciones.btn.btn-info.dropdown-toggle(type='button', data-toggle='dropdown')
+                                    | Acciones
+                                ul.dropdown-menu(role='menu', aria-labelledby='acciones')
+                                    li(role='presentation')
+                                        a(role='menuitem', tabindex='-1', href='#', ng-click="bloquearCliente(transaccion.Cliente_idCliente)") Bloquear TDD
+                                    li(role='presentation')
+                                        a(role='menuitem', tabindex='-1', href='#') Ver Historial Cliente
+                                    li(role='presentation')
+                                        a(role='menuitem', tabindex='-1', href='#') Ver Info Contacto Cliente
+                                    li.divider(role='presentation')
+                                    li(role='presentation')
+                                        a(role='menuitem', tabindex='-1', href='#', ng-click="aprobarTransaccion(transaccion.idTransacciones)") Aprobar Transaccion
+                br
+                br
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+
+block scripts
+    script(src='/javascripts/detenidasLogic.js')

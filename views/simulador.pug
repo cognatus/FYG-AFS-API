@@ -1,0 +1,86 @@
+extends navbar
+
+block content
+    .users-container(ng-controller="simulador", ng-init="getInfo()")
+        .card.container.card-form
+            .card-body
+                .row
+                    .col-sm-9(style='border: 1px solid;')
+                        form.form-horizontal(ng-submit="addTransaccion()")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_idTransacciones') idTransacciones:
+                                .col-sm-10
+                                    input#new_idTransacciones.form-control(type='text', placeholder='idTransacciones', name='new_idTransacciones', ng-model="new_transaccion.idTransacciones")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Cliente_idCliente') Cliente_idCliente:
+                                .col-sm-10
+                                    select#new_Cliente_idCliente.form-control(name='new_Cliente_idCliente', ng-model="new_transaccion.Cliente_idCliente")
+                                        option(ng-repeat="cliente in info.clientes", value="{{cliente.idCliente}}") {{cliente.Nombre}} {{cliente.Apellido_paterno}} {{cliente.Apellido_materno}}
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Canal') Canal:
+                                .col-sm-10
+                                    input#new_Canal.form-control(type='text', placeholder='Canal', name='new_Canal', ng-model="new_transaccion.Canal")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Clave') Clave:
+                                .col-sm-10
+                                    input#new_Clave.form-control(type='text', placeholder='Clave', name='new_Clave', ng-model="new_transaccion.Clave")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Giro') Giro:
+                                .col-sm-10
+                                    select#new_Giro.form-control(name='new_Giro', ng-model="new_transaccion.Giro")
+                                        option(ng-repeat="giro in info.giros", value="{{giro.idGiros}}") {{giro.Giro}}
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Moneda') Moneda:
+                                .col-sm-10
+                                    input#new_Moneda.form-control(type='text', placeholder='Moneda', name='new_Moneda', ng-model="new_transaccion.Moneda")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Banco_destino') Banco_destino:
+                                .col-sm-10
+                                    input#new_Banco_destino.form-control(type='text', placeholder='Banco_destino', name='new_Banco_destino', ng-model="new_transaccion.Banco_destino")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Cuenta_destino') Cuenta_destino:
+                                .col-sm-10
+                                    input#new_Cuenta_destino.form-control(type='text', placeholder='Cuenta_destino', name='new_Cuenta_destino', ng-model="new_transaccion.Cuenta_destino")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Pais_destino') Pais_destino:
+                                .col-sm-10
+                                    input#new_Pais_destino.form-control(type='text', placeholder='Pais_destino', name='new_Pais_destino', ng-model="new_transaccion.Pais_destino")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Ciudad_destino') Ciudad_destino:
+                                .col-sm-10
+                                    input#new_Ciudad_destino.form-control(type='text', placeholder='Ciudad_destino', name='new_Ciudad_destino', ng-model="new_transaccion.Ciudad_destino")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Beneficiario') Beneficiario:
+                                .col-sm-10
+                                    input#new_Beneficiario.form-control(type='text', placeholder='Beneficiario', name='new_Beneficiario', ng-model="new_transaccion.Beneficiario")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Corresponsal') Corresponsal:
+                                .col-sm-10
+                                    input#new_Corresponsal.form-control(type='text', placeholder='Corresponsal', name='new_Corresponsal', ng-model="new_transaccion.Corresponsal")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Monto') Monto:
+                                .col-sm-10
+                                    input#new_Monto.form-control(type='text', placeholder='Monto', name='new_Monto', ng-model="new_transaccion.Monto")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Ubicacion') Ubicacion:
+                                .col-sm-10
+                                    input#new_Ubicacion.form-control(type='text', placeholder='Ubicacion', name='new_Ubicacion', ng-model="new_transaccion.Ubicacion")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_Estatus') Estatus:
+                                .col-sm-10
+                                    input#new_Estatus.form-control(type='text', placeholder='Estatus', name='new_Estatus', ng-model="new_transaccion.Estatus")
+                            .form-group
+                                label.control-label.col-sm-2(for='new_idTipo_validacion_FK') idTipo_validacion_FK:
+                                .col-sm-10
+                                    select#new_idTipo_validacion_FK.form-control(name='new_idTipo_validacion_FK', ng-model="new_transaccion.idTipo_validacion_FK")
+                                        option(ng-repeat="validacion in info.validaciones", value="{{validacion.idTipo_validacion}}") {{validacion.nombre_validacion}}
+                            .form-group
+                                .col-sm-offset-2.col-sm-10
+                                    button.btn.btn-default(type='submit') Agregar
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/userStyle.css')
+
+block scripts
+    script(src='/javascripts/simuladorLogic.js')

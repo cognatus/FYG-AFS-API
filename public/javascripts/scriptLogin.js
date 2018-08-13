@@ -16,7 +16,7 @@ app.controller("login", function ($scope, $http, $window, $cookies) {
         }).then(
             function sucess(data) {
                 $cookies.putObject('usuario', data.data);
-                $window.location.href = '/inicio';
+                $window.location.href = '/configuracion';
             },
             function error(err) {
                 alert('Login incorrecto');

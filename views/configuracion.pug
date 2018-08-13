@@ -6,7 +6,7 @@ block content
             h2 Ejecutar ETL
             br
             .row
-                button.btn.btn-info(ng-click="ejecutaETL()") Ejecutar ETL
+                button.btn.btn-info(ng-click="ejecutaETL(false)") Ejecutar ETL
                 br
                 br
                 h2(ng-if="cargaETL") Cargando...
@@ -20,7 +20,7 @@ block content
                     h4.card-title Archivos {{dir.rubro}}
                     form.custom-file
                         input(type='file', lang='es',file-model = "dir.file")
-                        button(ng-click = "uploadFile(dir)") Subele
+                        button(ng-click = "uploadFile(dir)") Subir
             br
             br
             br

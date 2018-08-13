@@ -50,4 +50,16 @@ router.get('/bitacora', validateSession, function (req, res, next) {
   res.render('bitacora', { title: 'Bitacora' });
 });
 
+router.get('/operaciones', validateSession, function (req, res, next) {
+  res.render('operaciones', { title: 'Operaciones' });
+});
+
+router.get('/transacciones_detenidas', validateSession, function (req, res, next) {
+  res.render('transacciones_detenidas', { title: 'Transacciones Detenidas' });
+});
+
+router.get('/simulador', validateSession, function (req, res, next) {
+  res.render('simulador', { title: 'Simulador' });
+});
+
 module.exports = router;

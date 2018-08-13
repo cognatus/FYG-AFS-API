@@ -1,0 +1,65 @@
+extends navbar
+
+block content
+    .card.file-form(ng-controller="operaciones", ng-init="getRules()")
+        .card-body
+            //h2 Ejecutar Reglas
+            //br
+            //.row
+            //    button.btn.btn-info Ejecutar Reglas
+            //    br
+            //    br
+            //    h2(ng-if="cargaETL") Cargando...
+            //br
+            h2 Agregar o cambiar reglas
+            button.btn.btn-danger(ng-click="regla_new=!regla_new") Agregar regla
+            .col-sm
+                form.custom-file(ng-show="regla_new", ng-submit="add_regla()")
+                    h6 Nombre validacion
+                    input(type='text', ng-model="regla_new_nombre")
+                    h6 Tipo
+                    input(type='text', ng-model="regla_new_tipo")
+                    br
+                    br
+                    button(type="submit") Agregar
+            br
+            .row
+                .col-sm(ng-repeat="validacion in validaciones")
+                    h4.card-title {{validacion.nombre_validacion}}
+                    form.custom-file(ng-repeat="regla_general in reglas_general", ng-if="validacion.idTipo_validacion === regla_general.tipo_de_transaccion_idtipo")
+                        h6 {{regla_general.regla}}
+                        ul
+                            li(ng-repeat="rango in regla_general.rangos") {{rango.Limitador}}: 
+                                input(type="text", ng-model="rango.Valor")
+                    br
+                    br
+                    br
+                    button(ng-click="rubro[validacion.id]=!rubro[validacion.id]") Agregar rubro
+                    form.custom-file(ng-show="rubro[validacion.id]", ng-submit="add_rubro(validacion)")
+                        h6 Nombre
+                        input(type='text', ng-model="validacion.new.nombre")
+                        h6 Valor Bajo
+                        input(type='text', ng-model="validacion.new.bajo")
+                        h6 Valor Medio
+                        input(type='text', ng-model="validacion.new.medio")
+                        h6 Valor Alto
+                        input(type='text', ng-model="validacion.new.alto")
+                        h6 Giro
+                        select(ng-model="validacion.new.giro")
+                            option(ng-repeat="giro in giros", value="{{giro.idGiros}}") {{giro.Giro}}
+                        h6 Hoja
+                        select(ng-model="validacion.new.hoja")
+                            option(ng-repeat="hoja in hojas", value="{{hoja.idReglas_estaticas}}") {{hoja.Metodo}}
+                        br
+                        br
+                        button(type="submit") Agregar
+                    
+            br
+            br
+            br
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+
+block scripts
+    script(src='/javascripts/operationsLogic.js')

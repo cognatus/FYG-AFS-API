@@ -2,7 +2,8 @@ var controller = {};
 
 controller.login = function (req, res, next, sql) {
 
-    var request = new sql.Request();
+    var request = sql.request();
+    
     request.query("select * from [dbo].[empleados] where correo='" + req.body.correo + "' and contrasenia='" + req.body.contrasenia + "'", function (err, recordset) {
         if (err || recordset.recordset.length < 1) {
             console.log(err || "Datos de Login incorrectos");
@@ -18,7 +19,7 @@ controller.login = function (req, res, next, sql) {
 
 controller.getUsers = function (req, res, next, sql) {
 
-    var request = new sql.Request();
+    var request = sql.request();
     request.query("select * from [dbo].[empleados] where sucursal_clave='" + req.query.sucursal_clave + "' and rol=" + req.query.rol, function (err, recordset) {
         if (err || recordset.recordset.length < 1) {
             console.log(err || "Consutla incorrecta");
@@ -32,7 +33,7 @@ controller.getUsers = function (req, res, next, sql) {
 }
 
 controller.registro = function (req, res, next, sql) {
-    var request = new sql.Request();
+    var request = sql.request();
     var query = 'INSERT INTO [dbo].[empleados]' +
         '([clave]' +
         ',[nombres]' +
@@ -45,6 +46,7 @@ controller.registro = function (req, res, next, sql) {
         ',[telefono]' +
         ',[contrasenia]' +
         ',[rol]' +
+        ',[prvilegios]' +
         ',[sucursal_clave])' +
         'VALUES' +
         '(\'' + req.body.clave +
@@ -58,7 +60,8 @@ controller.registro = function (req, res, next, sql) {
         '\',\'' + req.body.telefono +
         '\',\'' + req.body.contrasenia +
         '\',' + req.body.rol +
-        ',\'' + req.body.sucursal_clave +
+        ',\'' + req.body.prvilegios +
+        '\',\'' + req.body.sucursal_clave +
         '\');';
     request.query(query, function (err, recordset) {
 
@@ -72,7 +75,7 @@ controller.registro = function (req, res, next, sql) {
 }
 
 controller.modifica = function (req, res, next, sql) {
-    var request = new sql.Request();
+    var request = sql.request();
     var query = "UPDATE [dbo].[empleados] SET" +
         "[nombres] ='" + req.body.nombres +
         "',[apellido_paterno] ='" + req.body.apellido_paterno +
@@ -84,7 +87,8 @@ controller.modifica = function (req, res, next, sql) {
         "',[telefono] ='" + req.body.telefono +
         "',[contrasenia] ='" + req.body.contrasenia +
         "',[rol] =" + req.body.rol +
-        ",[sucursal_clave] ='" + req.body.sucursal_clave +
+        ",[prvilegios] ='" + req.body.prvilegios +
+        "',[sucursal_clave] ='" + req.body.sucursal_clave +
         "' WHERE [clave] = '" + req.body.clave + "';"
     request.query(query, function (err, recordset) {
 
@@ -100,7 +104,7 @@ controller.modifica = function (req, res, next, sql) {
 
 controller.elimina = function (req, res, next, sql) {
 
-    var request = new sql.Request();
+    var request = sql.request();
     var query = "DELETE FROM [dbo].[empleados]" +
         " WHERE clave = '"+req.query.clave+"';"
     request.query(query, function (err, recordset) {

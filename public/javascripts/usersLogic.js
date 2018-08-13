@@ -12,6 +12,33 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
     vm.showUser = function (user) {
         vm.usuario = user;
         vm.add = false;
+        vm.checkBoxReset();
+        vm.checkCheckBox(user.prvilegios.split(","));
+    }
+
+    //checkobox de roles
+    vm.checkBox = {
+        opc1: false,
+        opc2: false,
+        opc3: false,
+        opc4: false,
+        opc5: false
+    }
+
+    vm.checkBoxReset = function () {
+        vm.checkBox = {
+            opc1: false,
+            opc2: false,
+            opc3: false,
+            opc4: false,
+            opc5: false
+        }
+    }
+
+    vm.checkCheckBox = function (usos) {
+        usos.forEach(uso => {
+            vm.checkBox['opc' + uso] = true;
+        });
     }
 
     //Obtenemos la lista de todos los usuarios vase al rol 
@@ -40,6 +67,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
                         vm.adm = ''; vm.pdf = ''; vm.pdl = 'active';
                         break;
                 }
+                vm.checkCheckBox(vm.usuario.prvilegios.split(","));
                 vm.add = false;
             },
             function error(err) {
@@ -51,13 +79,21 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
 
     //para modificar usuarios
     vm.updateUser = function (user) {
+        user.prvilegios = '0';
+        for (var key in vm.checkBox) {
+            if (vm.checkBox[key] && key !== 'opc0') {
+                user.prvilegios += ',' + key.split('opc')[1];
+            }
+        }
         $http({
             method: 'PUT',
             url: 'http://localhost:3000/api/user',
             data: user
         }).then(
             function sucess(data) {
-                console.log(data)
+                if (vm.userLog.clave === user.clave) {
+                    $cookies.putObject('usuario', user);
+                }
                 alert('Usuario modificado correctamente');
             },
             function error(err) {
@@ -98,6 +134,7 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
     //reseteamos el formulario de añadir
     vm.prepareAdd = function () {
         vm.add = true;
+        vm.checkBoxReset();
         vm.new_usuario.apellido_paterno = "";
         vm.new_usuario.apellido_materno = "";
         vm.new_usuario.clave = "";
@@ -120,6 +157,12 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
 
     //metodo para añadir usuario
     vm.addUser = function () {
+        vm.new_usuario.prvilegios = '0';
+        for (var key in vm.checkBox) {
+            if (vm.checkBox[key] && key !== 'opc0') {
+                vm.new_usuario.prvilegios += ',' + key.split('opc')[1];
+            }
+        }
         $http({
             method: 'POST',
             url: 'http://localhost:3000/api/user',

@@ -58,6 +58,27 @@ block content
                                 .col-sm-10
                                     input#sucursal_clave.form-control(type='text', placeholder='Clave sucursal', name='sucursal_clave', ng-model="usuario.sucursal_clave")
                             .form-group
+                                div(ng-if='adm || pdl')
+                                    label.control-label.col-sm-3(for='reportes') Reportes:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='reportes', ng-model='checkBox.opc1')
+                                div(ng-if='adm')
+                                    label.control-label.col-sm-3(for='usuarios') Usuarios:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='usuarios', ng-model='checkBox.opc2')
+                                div(ng-if='adm || pdf')
+                                    label.control-label.col-sm-3(for='operaciones') Opreaciones Detenidas:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='operaciones', ng-model='checkBox.opc3')
+                                div(ng-if='adm || pdf')
+                                    label.control-label.col-sm-3(for='bitacora') Bitacora:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='bitacora', ng-model='checkBox.opc4')
+                                div(ng-if='adm || pdl')
+                                    label.control-label.col-sm-3(for='config') Configuraciones:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='config', ng-model='checkBox.opc5')
+                            .form-group
                                 .col-sm-offset-2.col-sm-10
                                     button.btn.btn-default(type='submit') Cambiar
                                     button.btn.btn-warning(type='button', style="float: right !important;", ng-click="deleteUser(usuario)") Borrar
@@ -107,6 +128,27 @@ block content
                                 label.control-label.col-sm-2(for='new_sucursal_clave') Clave sucursal:
                                 .col-sm-10
                                     input#new_sucursal_clave.form-control(type='text', placeholder='Clave sucursal', name='new_sucursal_clave', ng-model="new_usuario.sucursal_clave")
+                            .form-group
+                                div(ng-if='adm || pdl')
+                                    label.control-label.col-sm-3(for='reportes') Reportes:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='reportes', ng-model='checkBox.opc1')
+                                div(ng-if='adm')
+                                    label.control-label.col-sm-3(for='usuarios') Usuarios:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='usuarios', ng-model='checkBox.opc2')
+                                div(ng-if='adm || pdf')
+                                    label.control-label.col-sm-3(for='operaciones') Opreaciones Detenidas:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='operaciones', ng-model='checkBox.opc3')
+                                div(ng-if='adm || pdf')
+                                    label.control-label.col-sm-3(for='bitacora') Bitacora:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='bitacora', ng-model='checkBox.opc4')
+                                div(ng-if='adm || pdl')
+                                    label.control-label.col-sm-3(for='config') Configuraciones:
+                                    .col-sm-1
+                                        input(type="checkbox", value="", name='config', ng-model='checkBox.opc5')
                             .form-group
                                 .col-sm-offset-2.col-sm-10
                                     button.btn.btn-default(type='submit') Agregar

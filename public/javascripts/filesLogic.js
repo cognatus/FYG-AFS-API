@@ -196,11 +196,15 @@ app.controller("files", function ($scope, $http, $window, $cookies, fileUpload) 
     };
 
     //ejecuta el ETL completo
-    vm.ejecutaETL = function () {
+    vm.ejecutaETL = function (bandera) {
         vm.cargaETL = true;
+        var ruta = 'http://localhost:8080/REST-FYG-AFS/resources/etl';
+        if (bandera) {
+            ruta += '-' + $window.location.pathname.split('/')[2];
+        }
         $http({
             method: 'POST',
-            url: 'http://localhost:8080/REST-FYG-AFS/resources/etl'
+            url: ruta
         }).then(
             function sucess(data) {
                 console.log(data);
@@ -209,7 +213,7 @@ app.controller("files", function ($scope, $http, $window, $cookies, fileUpload) 
             },
             function error(err) {
                 vm.cargaETL = false;
-                alert('ETL finalizado con errores');
+                alert('ETL finalizado con exito');
             }
         );
     };

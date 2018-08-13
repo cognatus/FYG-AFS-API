@@ -2,7 +2,7 @@ var controller = {};
 
 controller.get_dirs = function (req, res, next, sql) {
 
-    var request = new sql.Request();
+    var request = sql.request();
     request.query("select * from [dbo].[ejecucion] where sucursal_clave='" + req.query.sucursal_clave + "'", function (err, recordset) {
         if (err || recordset.recordset.length < 1) {
             console.log(err || "No se encontro datos");
@@ -17,7 +17,7 @@ controller.get_dirs = function (req, res, next, sql) {
 
 controller.get_files = function (req, res, next, sql) {
 
-    var request = new sql.Request();
+    var request = sql.request();
     request.query("SELECT [created_at] ,[archivo] ,[sucursal_clave] ,[rubro] FROM [dbo].[archivos] WHERE sucursal_clave='" + req.query.sucursal_clave + "' and rubro = '" + req.query.rubro + "'", function (err, recordset) {
         if (err) {
             console.log(err);
@@ -32,7 +32,7 @@ controller.get_files = function (req, res, next, sql) {
 
 controller.get_bitacora = function (req, res, next, sql) {
 
-    var request = new sql.Request();
+    var request = sql.request();
     request.query("SELECT [created_at], [mensaje], [archivo], [error], [sucursal_clave] FROM [dbo].[bitacora] WHERE sucursal_clave='" + req.query.sucursal_clave + "'", function (err, recordset) {
         if (err) {
             console.log(err);
@@ -47,7 +47,7 @@ controller.get_bitacora = function (req, res, next, sql) {
 
 controller.updateDirs = function (req, res, next, sql) {
 
-    var request = new sql.Request();
+    var request = sql.request();
     request.query("UPDATE [dbo].[ejecucion]" +
                     "SET [tiempo_ejecucion] = '" + req.body.tiempo_ejecucion +
                     "',[carpeta_recoleccion] = '" + req.body.carpeta_recoleccion +
@@ -68,7 +68,7 @@ controller.updateDirs = function (req, res, next, sql) {
 }
 
 controller.recolec = function (req, res, next, sql) {
-    var request = new sql.Request();
+    var request = sql.request();
     var query = 'INSERT INTO [dbo].[empleados]' +
         '([clave]' +
         ',[nombres]' +
