@@ -3,22 +3,62 @@ extends navbar
 block content
     .users-container(ng-controller="usuarios", ng-init="getUsers(1)")
         ul.nav.nav-tabs.file-form
-            li(ng-class="adm", ng-click="getUsers(1)")
+            li.tabs_user(ng-class="adm", ng-click="getUsers(1)")
                 a(href='#') Admins
-            li(ng-class="pdf", ng-click="getUsers(2)")
+            li.tabs_user(ng-class="pdf", ng-click="getUsers(2)")
                 a(href='#') Prevencion de fraudes
-            li(ng-class="pdl", ng-click="getUsers(3)")
+            li.tabs_user(ng-class="pdl", ng-click="getUsers(3)")
                 a(href='#') Prevencion de lavado de dinero
         .card.container.card-form
             .card-body
                 .row
-                    .col-sm-3(style='border: 1px solid;')
+                    .col-sm-4(style='border: 1px solid;')
                         br
-                        p 
-                            button.btn.btn-danger.btn-lg(ng-click="prepareAdd()") Agregar
-                        p(ng-repeat="usua in usuarios", ng-click="showUser(usua)")
-                            a(href="") {{usua.nombres}}
-                    .col-sm-9(style='border: 1px solid;')
+                        button.btn.btn-danger.btn-lg(ng-click="prepareAdd()") Agregar
+                        br
+                        br
+                        style.
+                            li.tabs_user:not(.active) a {
+                                background-color: #ccc;
+                                color: white;
+                            }
+
+                            a.nav-link {
+                                color: inherit;
+                            }
+
+                            a.nav-link:hover 
+                            {
+                                background-color: rgb(238, 238, 238);
+                            }
+                            .imagenPerfil{
+                                font-size: 70px;
+                                float: left;
+                                margin: 0 12px;
+                            }
+                            .info{
+                                width: calc(100% - 94px);
+                                float: right;
+                                margin: 6px 0;   
+                            }
+                        #v-pills-tab.nav.flex-column.nav-pills(role='tablist', aria-orientation='vertical', ng-repeat="usua in usuarios", ng-click="showUser(usua)")
+                            a.nav-link(data-toggle='pill', style="color: inherit" href='#', role='tab') 
+                                .imagenPerfil
+                                    i.fa.fa-user
+                                .info
+                                    .nombre
+                                    b {{usua.nombres}} {{usua.apellido_paterno}} {{usua.apellido_materno}}
+                                    .datos
+                                    b Sucursal: 
+                                    | {{usua.sucursal_clave}}  
+                                    br
+                                    b Clave: 
+                                    | {{usua.clave}} 
+                                    br
+                                    b Correo: 
+                                    | {{usua.correo}} 
+                                    br
+                    .col-sm-8(style='border-top: 1px solid; border-right: 1px solid; border-bottom: 1px solid;')
                         form.form-horizontal(ng-if="!add", ng-submit="updateUser(usuario)")
                             h3 Clave: {{usuario.clave}}
                             .form-group
@@ -80,9 +120,8 @@ block content
                                         input(type="checkbox", value="", name='config', ng-model='checkBox.opc5')
                             .form-group
                                 .col-sm-offset-2.col-sm-10
-                                    button.btn.btn-default(type='submit') Cambiar
-                                    button.btn.btn-warning(type='button', style="float: right !important;", ng-click="deleteUser(usuario)") Borrar
-                                    
+                                    button.btn.btn-danger(type='button', ng-click="deleteUser(usuario)") Borrar
+                                    button.btn.btn-warning(type='submit', style="float: right !important;") Cambiar
                         form.form-horizontal(ng-if="add", ng-submit="addUser()")
                             .form-group
                                 label.control-label.col-sm-2(for='new_clave') Clave:

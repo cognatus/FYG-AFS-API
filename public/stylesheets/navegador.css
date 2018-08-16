@@ -1,0 +1,138 @@
+
+@media screen and (max-width: 1024px) {
+    .navegador, .cuerpo {
+        margin: auto;
+        width: 95%;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .navegador, .cuerpo {
+        width: 90%;
+        margin: auto;
+        min-width: 972px;
+    }
+}
+
+.navegador {
+    margin-top: 24px;
+    max-width: 1318px;
+}
+
+.cuerpo{
+    max-width: 1318px;
+    margin: auto;
+    margin-top: 8px;
+}
+
+@media screen and (max-width: 1024px) {
+    #headerPagina, .principal {
+        margin: auto;
+        width: 95%;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    #headerPagina, .principal {
+        width: 90%;
+        margin: auto;
+        min-width: 972px;
+    }
+}
+
+#headerPagina {
+    margin-top: 24px;
+    max-width: 1318px;
+}
+
+.main{
+    max-width: 1318px;
+    margin: auto;
+    margin-top: 8px;
+}
+
+.tab img {
+    height: 50px;
+    margin-top: 2px;
+    margin-left: 8px;
+    display: block;
+    float: left;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+}
+
+
+/* Style the buttons that are used to open the tab content */
+
+.tab .pageTabs {
+    float: left;
+    padding: 14px 16px;
+    height: 54px;
+}
+
+
+.tab button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botonesNav{
+    overflow: auto; width: calc(100% - 145px); float: left;
+}
+
+.botonesFA {
+    float: right;
+    position: relative;
+    margin-right: 12px;
+    padding: 0 12px;
+}
+
+#botonSalir,
+#botonBell,
+#botonConfig {
+    font-size: 26px;
+    color: gray;
+    display: inline;
+    height: 54px !important;
+    padding: 0 6px;
+}
+
+#contadorNotificaciones {
+    font-size: 12px;
+    display: block;
+    position: absolute;
+    background-color: red;
+    color: white!important;
+    border-radius: 100%;
+    left: 64px;
+    width: 18px;
+}
+
+
+/* Change background color of buttons on hover */
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+
+/* Create an active/current tablink class */
+
+.tab button.active {
+    background-color: #ddd;
+}
+
+app-notificaciones-previs{
+    top: 88px;
+    position: absolute;
+    float: right;
+    margin-left: -74px;
+}

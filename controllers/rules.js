@@ -138,6 +138,50 @@ controller.getTransactions = function (req, res, next, sql) {
 
 }
 
+controller.getTransactionsHistory = function (req, res, next, sql, sql2) {
+
+    console.log(req.query.id);
+
+    var request = sql.request();
+    var request2 = sql2.request();
+    var response = {};
+
+    request2.query("SELECT t.[fecha_información] as Fecha_informacion, t.[clave_de_transacción] as idTransacciones, t.[descripción_transacción] as Descripcion, t.[tipo_transaccion] as nombre_validacion, t.[canal_de_transacción], t.[cve_usuario], t.[no_tarjeta] as Numero_TDD, t.[tipo_de_movimiento], t.[moneda], t.[ciudad], t.[monto_transacción] as Monto, CONCAT(c.nombre_o_razon_social, ' ', c.apellido_paterno, ' ', c.apellido_materno) as nombre_cliente FROM [dbo].[transaccional] t INNER JOIN [dbo].cliente c ON c.numero_de_cliente = t.cliente_numero_de_cliente WHERE t.cliente_numero_de_cliente = '"+req.query.id+"'", function (err, recordset) {
+        consulta = recordset.recordset;
+        console.log(consulta);
+        console.log(err);
+        if (err || consulta.length < 1) {
+            console.log(err || "Consutla incorrecta");
+            res.status(401).send(err || "Consutla incorrecta");
+        } else {
+            res.json(consulta);
+        }
+    });
+
+}
+
+controller.getClientInfo = function (req, res, next, sql, sql2) {
+
+    console.log(req.query.id);
+
+    var request = sql.request();
+    var request2 = sql2.request();
+    var response = {};
+
+    request2.query("SELECT * FROM [dbo].[cliente] WHERE numero_de_cliente = '"+req.query.id+"'", function (err, recordset) {
+        consulta = recordset.recordset;
+        console.log(consulta);
+        console.log(err);
+        if (err || consulta.length < 1) {
+            console.log(err || "Consutla incorrecta");
+            res.status(401).send(err || "Consutla incorrecta");
+        } else {
+            res.json(consulta);
+        }
+    });
+
+}
+
 controller.getHistoricTransactions = function (req, res, next, sql, sql2) {
 
     var request = sql.request();
@@ -184,12 +228,12 @@ controller.aprobarTransaccion = function (req, res, next, sql) {
     var request = sql.request();
     var response = {};
 
-    request.query('UPDATE [dbo].[transacciones] SET [validada] = 1 WHERE [idTransacciones] = '+req.body.id, function (err, recordset) {
+    request.query("UPDATE [dbo].[transacciones] SET [validada] = 1 WHERE [idTransacciones] = '"+req.body.id+"'", function (err, recordset) {
         if (err) {
             console.log(err || "Consutla incorrecta");
             res.status(401).send(err || "Consutla incorrecta");
         } else {
-            res.json(consulta);
+            res.json(recordset);
         }
     });
 
@@ -392,7 +436,8 @@ controller.simulateTransaction = function (req, res, next, sql, sql2) {
                                                 var response = {};
                                                 var rango = date_format_between();
                         
-                                                request2.query("SELECT * FROM [dbo].[transaccional] WHERE [fecha_información] between '"+rango.early+"' and '"+rango.last+"'", function (err, recordset) {
+                                                request2.query("SELECT * FROM [dbo].[transaccional] WHERE [cliente_numero_de_cliente] = '"+data.Cliente_idCliente+"' AND [fecha_información] between '"+rango.early+"' and '"+rango.last+"'", function (err, recordset) {
+                                                    console.log("SELECT * FROM [dbo].[transaccional] WHERE [cliente_numero_de_cliente] = '"+data.Cliente_idCliente+"' AND [fecha_información] between '"+rango.early+"' and '"+rango.last+"'")
                                                     consulta = recordset.recordset;
                                                     if (err) {
                                                         console.log(err);
@@ -400,7 +445,7 @@ controller.simulateTransaction = function (req, res, next, sql, sql2) {
                                                         res.status(401).send(err || "Consutla incorrecta");
                                                     } else {
                                                         response.frecuencia = consulta.length;
-                                                        request.query("SELECT * FROM [dbo].[transacciones] WHERE [Fecha_informacion] between '"+rango.early+"' and '"+rango.last+"'", function (err, recordset) {
+                                                        request.query("SELECT * FROM [dbo].[transacciones] WHERE [Cliente_idCliente] = '"+data.Cliente_idCliente+"' AND [Fecha_informacion] between '"+rango.early+"' and '"+rango.last+"'", function (err, recordset) {
                                                             consulta = recordset.recordset;
                                                             if (err) {
                                                                 console.log(err || "Consutla incorrecta");

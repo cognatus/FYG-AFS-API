@@ -1,0 +1,145 @@
+
+
+@media only screen and (max-height: 768px){
+    .contenedor{
+        height: 505px;
+    }
+}
+@media only screen and (min-height: 768px){
+    .contenedor{
+        height: 705px;
+    }
+}
+
+.tabs{
+    height: 32px;
+}
+.tabs button{
+    text-align: center;
+    background-color: white;
+    float: left;
+    display: block;
+    padding: 6px;
+    border: 1px solid #cccc;
+    border-bottom: 2px solid #cccc;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    width: 33.3333%;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.tabs button:hover{
+    background-color: #ddd;
+}
+
+.aside{
+    background-color:white;
+    float: left;
+    width: 30%;
+    height: 100%;
+    border: 2px solid #ccc;
+    border-top: none;   
+}
+
+.input-group *{
+    border-radius: 0;
+    border-right: none;
+    border-top: none; border-left: none; 
+}
+
+.principal{
+    background-color: white;
+    float: right;
+    width: 70%;
+    height: 100%;
+    border: 2px solid #ccc;
+    border-top: none;
+    border-left:none;
+}
+
+#listaDeUsuarios{
+    overflow-y: auto;
+    height: calc(100% - 36.6px);
+}
+
+.usuario{
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.usuario:hover{
+    background-color: #f2f2f2;
+}
+
+.imagenPerfil{
+    font-size: 70px;
+    float: left;
+    margin: 0 12px;
+}
+
+.info{
+    width: calc(100% - 74px);
+    float: right;
+    margin: 6px 0;   
+}
+
+.info .nombre{
+    text-align: center;
+}
+
+.info .datos{
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.infoPersona{
+    height: 90%;
+}
+
+.imagen{
+    float: left;
+    width: 107px;
+    font-size: 150px;
+    margin: 0 48px;
+    height: 100%;
+}
+
+.principal .datos{
+    width: calc(100% - 227px);
+    float: right;
+    margin-left: 24px;
+    line-height: 1.8;
+    height:100%;
+}
+
+.principal .datos b{
+    margin-left: -10px;
+    font-size: 24px
+}
+
+.pie{
+    height: 10%;
+    float: left;
+    width: 100%;
+}
+
+.btn-success, .btn-primary{
+    float: right;
+    margin-left: 24px;
+}
+
+.btn-success{
+    margin-right: 20px;
+}
+
+.btn-danger{
+    float:left;
+    margin-left: 20px;
+}
+
+.btn-warning{
+    float: left;
+    margin-left: -18px;
+}

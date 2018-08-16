@@ -3,54 +3,56 @@ extends navbar
 block content
     .card.file-form(ng-controller="files", ng-init="getDirs()")
         .card-body
-            h2 Ejecutar ETL
+            h2 Manejo de Archivos
             br
             .row
-                button.btn.btn-info(ng-click="ejecutaETL(false)") Ejecutar ETL
-                br
-                br
-                h2(ng-if="cargaETL") Cargando...
+                .col-sm-8(ng-repeat="dir in dirs")
+                    .custom-file
+                        input.custom-file-input(type="file", id="inputCliente", lang='es',file-model = "dir.file")
+                        label.custom-file-label(for="customFile") {{dir.rubro}}
+                    br
+                    br
+                    button.btn.btn-info(ng-click = "uploadFile(dir)") Subir
+                    br
+                    br
+            button.btn.btn-success(style="float: right !important;", ng-click="ejecutaETL(false)") Ejecutar ETL
             br
             br
-            br
-            h2 Subir archivos para ejecucion de ETL
-            br
-            .row
-                .col-sm(ng-repeat="dir in dirs")
-                    h4.card-title Archivos {{dir.rubro}}
-                    form.custom-file
-                        input(type='file', lang='es',file-model = "dir.file")
-                        button(ng-click = "uploadFile(dir)") Subir
+            h2(ng-if="cargaETL") Cargando...
             br
             br
             br
             h2 Administrar direcciones de carpetas para ejecucion de ETL
             br
-            .etl-dir(ng-repeat="dir in dirs")
-                h4.card-title Direccion de ETL {{dir.rubro}}
-                form.form-horizontal(ng-submit="updateDir(dir)")
-                    .form-group
-                        label.control-label.col-sm-2(for='nuevos') Nuevos:
-                        .col-sm-10
-                            input#nuevos.form-control(type='text', placeholder='Carpeta nuevos', name='nuevos', ng-model="dir.carpeta_recoleccion", value="{{dir.carpeta_recoleccion}}")
-                    .form-group
-                        label.control-label.col-sm-2(for='finalizados') Finalizados:
-                        .col-sm-10
-                            input#finalizados.form-control(type='text', placeholder='Carpeta finalizados', name='finalizados', ng-model="dir.carpeta_finalizados", value="{{dir.carpeta_finalizados}}")
-                    .form-group
-                        label.control-label.col-sm-2(for='fallidos') Fallidos:
-                        .col-sm-10
-                            input#fallidos.form-control(type='text', placeholder='Carpeta fallidos', name='fallidos', ng-model="dir.carpeta_fallidos", value="{{dir.carpeta_fallidos}}")
-                    .form-group
-                        label.control-label.col-sm-2(for='tiempo') Tiempo:
-                        .col-sm-10
-                            input#tiempo.form-control(type='text', placeholder='Tiempo de ejecucion', name='tiempo', ng-model="dir.tiempo_ejecucion", value="{{dir.tiempo_ejecucion}}")
-                    .form-group
-                        .col-sm-offset-2.col-sm-10
-                            button.btn.btn-default(type='submit') Cambiar
-                a(href="/archivos/{{dir.rubro}}") Ver archivos
-                br
-                br
+            #accordion
+                .card(ng-repeat="dir in dirs")
+                    .card-header(id="{{dir.rubro}}")
+                        h5.mb-0
+                        button.btn.btn-link(data-toggle='collapse', data-target='#target_{{dir.rubro}}', aria-expanded='true', aria-controls='collapseOne')
+                            | Direccion de ETL {{dir.rubro}}
+                    .collapse(aria-labelledby='{{dir.rubro}}', id="target_{{dir.rubro}}" data-parent='#accordion')
+                        .card-body
+                            form.form-horizontal(ng-submit="updateDir(dir)")
+                                .form-group
+                                    label.control-label.col-sm-2(for='nuevos') Nuevos:
+                                    .col-sm-10
+                                        input#nuevos.form-control(type='text', placeholder='Carpeta nuevos', name='nuevos', ng-model="dir.carpeta_recoleccion", value="{{dir.carpeta_recoleccion}}")
+                                .form-group
+                                    label.control-label.col-sm-2(for='finalizados') Finalizados:
+                                    .col-sm-10
+                                        input#finalizados.form-control(type='text', placeholder='Carpeta finalizados', name='finalizados', ng-model="dir.carpeta_finalizados", value="{{dir.carpeta_finalizados}}")
+                                .form-group
+                                    label.control-label.col-sm-2(for='fallidos') Fallidos:
+                                    .col-sm-10
+                                        input#fallidos.form-control(type='text', placeholder='Carpeta fallidos', name='fallidos', ng-model="dir.carpeta_fallidos", value="{{dir.carpeta_fallidos}}")
+                                .form-group
+                                    label.control-label.col-sm-2(for='tiempo') Tiempo:
+                                    .col-sm-10
+                                        input#tiempo.form-control(type='text', placeholder='Tiempo de ejecucion', name='tiempo', ng-model="dir.tiempo_ejecucion", value="{{dir.tiempo_ejecucion}}")
+                                .form-group
+                                    .col-sm-offset-2.col-sm-10
+                                        button.btn.btn-primary(style="float: right !important;", type='submit') Cambiar
+                            a(href="/archivos/{{dir.rubro}}") Ver archivos
 
 block styles
     link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')

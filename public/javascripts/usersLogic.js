@@ -55,8 +55,8 @@ app.controller("usuarios", function ($scope, $http, $window, $cookies) {
             function sucess(data) {
                 vm.usuarios = data.data;
                 vm.usuario = data.data[0];
-                //esto es para poner la clase de active a la parte del diseño
-                switch (rol) {
+                //esto es para poner la clase d e active a la parte del diseño
+                switch (rol) {  
                     case 1:
                         vm.adm = 'active'; vm.pdf = ''; vm.pdl = '';
                         break;

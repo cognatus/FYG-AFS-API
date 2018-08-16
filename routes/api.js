@@ -98,10 +98,20 @@ router.route('/add_rules')
 
 router.route('/transactions')
   .get(function (req, res, next) {
-    rules.getTransactions(req, res, next, db);
+    rules.getTransactions(req, res, next, db, db2);
   })
   .post(function (req, res, next) {
     rules.aprobarTransaccion(req, res, next, db);
+  });
+
+router.route('/transactions_history')
+  .get(function (req, res, next) {
+    rules.getTransactionsHistory(req, res, next, db, db2);
+  });
+
+router.route('/client_info')
+  .get(function (req, res, next) {
+    rules.getClientInfo(req, res, next, db, db2);
   });
 
 router.route('/client_transactions')

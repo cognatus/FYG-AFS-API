@@ -5,8 +5,8 @@ block content
         .card-body
             .etl-dir
                 h4.card-title Transacciones detenidas
-                table.table.table-striped
-                    thead
+                table.table.table-striped.table-hover
+                    thead.thead-dark
                         tr
                             th #
                             th TDD
@@ -23,25 +23,80 @@ block content
                             td {{transaccion.Numero_TDD}}
                             td {{transaccion.nombre_validacion}}
                             td {{transaccion.Estatus}}
-                            td {{transaccion.Monto}}
+                            td {{transaccion.Monto | currency}}
                             td {{transaccion.critizidad}}
-                            td {{transaccion.Fecha_informacion}}
+                            td {{transaccion.Fecha_informacion | date:"MM/dd/yyyy 'a las' h:mma"}}
                             td {{transaccion.Descripcion}}  
                             td 
-                                button#acciones.btn.btn-info.dropdown-toggle(type='button', data-toggle='dropdown')
-                                    | Acciones
-                                ul.dropdown-menu(role='menu', aria-labelledby='acciones')
-                                    li(role='presentation')
-                                        a(role='menuitem', tabindex='-1', href='#', ng-click="bloquearCliente(transaccion.Cliente_idCliente)") Bloquear TDD
-                                    li(role='presentation')
-                                        a(role='menuitem', tabindex='-1', href='#') Ver Historial Cliente
-                                    li(role='presentation')
-                                        a(role='menuitem', tabindex='-1', href='#') Ver Info Contacto Cliente
-                                    li.divider(role='presentation')
-                                    li(role='presentation')
-                                        a(role='menuitem', tabindex='-1', href='#', ng-click="aprobarTransaccion(transaccion.idTransacciones)") Aprobar Transaccion
+                                .dropdown
+                                    button.btn.btn-info.dropdown-toggle(type='button', id='{{transaccion.idTransacciones}}', data-toggle='dropdown')
+                                        | Acciones
+                                    ul.dropdown-menu(role='menu', aria-labelledby='{{transaccion.idTransacciones}}')
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='-1', href='#', ng-click="bloquearCliente(transaccion.Cliente_idCliente)") Bloquear TDD
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='-1', href='#', data-toggle="modal", data-target="#modalHistoricoTransacciones", ng-click="getTransactionsHistory(transaccion.Cliente_idCliente)") Ver Historial Cliente
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='-1', href='#', data-toggle="modal", data-target="#modalInfoClient", ng-click="getClientInfo(transaccion.Cliente_idCliente)") Ver Info Contacto Cliente
+                                        li.divider(role='presentation')
+                                        li(role='presentation')
+                                            a(role='menuitem', tabindex='-1', href='#', ng-click="aprobarTransaccion(transaccion)") Aprobar Transaccion
+                #modalHistoricoTransacciones.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalHistoricoTransaccionesTitle', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                        .modal-content
+                            .modal-header
+                                h5#modalHistoricoTransaccionesTitle.modal-title Transacciones pasadas de 
+                                    b {{historicoTransacciones[0].nombre_cliente}}
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                            .modal-body
+                                table.table.table-striped.table-hover
+                                    thead.thead-dark
+                                        tr
+                                            th #
+                                            th TDD
+                                            th Transaccion
+                                            th Monto
+                                            th Fecha
+                                            th Descripcion
+                                    tbody
+                                        tr(ng-repeat="transaccion in historicoTransacciones")
+                                            td {{transaccion.idTransacciones}}
+                                            td {{transaccion.Numero_TDD}}
+                                            td {{transaccion.nombre_validacion}}
+                                            td {{transaccion.Monto | currency}}
+                                            td {{transaccion.Fecha_informacion | date:"MM/dd/yyyy 'a las' h:mma"}}
+                                            td {{transaccion.Descripcion}}  
+                            .modal-footer
+                                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                #modalInfoClient.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalInfoClientTitle', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                        .modal-content
+                            .modal-header
+                                h5#modalInfoClientTitle.modal-title Informacion de contacto de 
+                                    b {{clientInfo.nombre_o_razon_social}} {{clientInfo.apellido_paterno}} {{clientInfo.apellido_materno}}
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                            .modal-body
+                                ul.list-group.list-group-flush
+                                    li.list-group-item 
+                                        b Telefono Celular: 
+                                        | {{clientInfo.telefono_celular}}
+                                    li.list-group-item 
+                                        b Telefono de Casa: 
+                                        | {{clientInfo.telefono_casa}}
+                                    li.list-group-item 
+                                        b Telefono de oficina: 
+                                        | {{clientInfo.telefono_oficina}}
+                                    li.list-group-item 
+                                        b Correo Electronico: 
+                                        | {{clientInfo.correo_electronico}}
+                            .modal-footer
+                                button.btn.btn-secondary(type='button', data-dismiss='modal') Cerrar
+                
                 br
                 br
+
 
 block styles
     link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')

@@ -11,49 +11,66 @@ block content
             //    br
             //    h2(ng-if="cargaETL") Cargando...
             //br
-            h2 Agregar o cambiar reglas
-            button.btn.btn-danger(ng-click="regla_new=!regla_new") Agregar regla
-            .col-sm
-                form.custom-file(ng-show="regla_new", ng-submit="add_regla()")
-                    h6 Nombre validacion
-                    input(type='text', ng-model="regla_new_nombre")
-                    h6 Tipo
-                    input(type='text', ng-model="regla_new_tipo")
-                    br
-                    br
-                    button(type="submit") Agregar
-            br
             .row
                 .col-sm(ng-repeat="validacion in validaciones")
-                    h4.card-title {{validacion.nombre_validacion}}
-                    form.custom-file(ng-repeat="regla_general in reglas_general", ng-if="validacion.idTipo_validacion === regla_general.tipo_de_transaccion_idtipo")
-                        h6 {{regla_general.regla}}
-                        ul
-                            li(ng-repeat="rango in regla_general.rangos") {{rango.Limitador}}: 
-                                input(type="text", ng-model="rango.Valor")
+                    h2.card-title {{validacion.nombre_validacion}}
+                    br
+                    #accordion
+                        .card(ng-repeat="regla_general in reglas_general", ng-if="validacion.idTipo_validacion === regla_general.tipo_de_transaccion_idtipo")
+                            .card-header(id="{{regla_general.idregla}}")
+                                h5.mb-0
+                                button.btn.btn-link(data-toggle='collapse', data-target='#target_{{regla_general.idregla}}', aria-expanded='true', aria-controls='collapseOne')
+                                    | {{regla_general.regla}}
+                            .collapse(aria-labelledby='{{regla_general.idregla}}', id='target_{{regla_general.idregla}}', data-parent='#accordion')
+                                .card-body
+                                    ul
+                                        li(ng-repeat="rango in regla_general.rangos")
+                                            .form-group
+                                                label( for="rango.Valor" ) {{rango.Limitador}}:
+                                                input.form-control( type="text", ng-model="rango.Valor", id="rango.Valor", placeholder="Nombre validacion")
                     br
                     br
-                    br
-                    button(ng-click="rubro[validacion.id]=!rubro[validacion.id]") Agregar rubro
+                    button.btn.btn-primary(ng-click="rubro[validacion.id]=!rubro[validacion.id]") Agregar rubro
                     form.custom-file(ng-show="rubro[validacion.id]", ng-submit="add_rubro(validacion)")
-                        h6 Nombre
-                        input(type='text', ng-model="validacion.new.nombre")
-                        h6 Valor Bajo
-                        input(type='text', ng-model="validacion.new.bajo")
-                        h6 Valor Medio
-                        input(type='text', ng-model="validacion.new.medio")
-                        h6 Valor Alto
-                        input(type='text', ng-model="validacion.new.alto")
-                        h6 Giro
-                        select(ng-model="validacion.new.giro")
-                            option(ng-repeat="giro in giros", value="{{giro.idGiros}}") {{giro.Giro}}
-                        h6 Hoja
-                        select(ng-model="validacion.new.hoja")
-                            option(ng-repeat="hoja in hojas", value="{{hoja.idReglas_estaticas}}") {{hoja.Metodo}}
+                        .form-group
+                            label( for="validacion.new.nombre" ) Nombre:
+                            input.form-control( type="text", ng-model="validacion.new.nombre", id="validacion.new.nombre", placeholder="Nombre validacion")
+                        .form-group
+                            label( for="validacion.new.bajo" ) Valor Bajo:
+                            input.form-control( type="text", ng-model="validacion.new.bajo", id="validacion.new.bajo", placeholder="Nombre validacion")
+                        .form-group
+                            label( for="validacion.new.medio" ) Valor Medio:
+                            input.form-control( type="text", ng-model="validacion.new.medio", id="validacion.new.medio", placeholder="Nombre validacion")
+                        .form-group
+                            label( for="validacion.new.alto" ) Valor Alto:
+                            input.form-control( type="text", ng-model="validacion.new.alto", id="validacion.new.alto", placeholder="Nombre validacion")
+                        .form-group
+                            label( for="validacion.new.giro" ) Giro:
+                            select.form-control.form-control-lg(id="validacion.new.giro", ng-model="validacion.new.giro")
+                                option(ng-repeat="giro in giros", value="{{giro.idGiros}}") {{giro.Giro}}
+                        .form-group
+                            label( for="validacion.new.giro" ) Hoja:
+                            select.form-control.form-control-lg(id="validacion.new.hoja", ng-model="validacion.new.hoja")
+                                option(ng-repeat="hoja in hojas", value="{{hoja.idReglas_estaticas}}") {{hoja.Metodo}}
                         br
                         br
-                        button(type="submit") Agregar
+                        button.btn.btn-primary(type="submit") Agregar
                     
+            br
+            br
+            button.btn.btn-danger(style="float: right !important;", ng-click="regla_new=!regla_new") Agregar regla
+            br
+            br
+            .col-sm
+                form.custom-file(ng-show="regla_new", ng-submit="add_regla()")
+                    .form-group
+                        label( for="regla_new_nombre" ) Nombre validacion
+                        input.form-control( type="text", ng-model="regla_new_nombre", id="regla_new_nombre", placeholder="Nombre validacion")
+                    .form-group
+                        label( for="regla_new_tipo" ) Tipo
+                        input.form-control( type="text", ng-model="regla_new_tipo", id="regla_new_tipo", placeholder="Tipo")
+                    br
+                    button.btn.btn-danger(type="submit") Agregar
             br
             br
             br
