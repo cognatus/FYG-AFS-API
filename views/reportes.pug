@@ -1,0 +1,89 @@
+extends navbar
+
+block content
+    
+    script(src='https://code.jquery.com/jquery-3.1.1.min.js')
+    script(src='https://code.highcharts.com/highcharts.js')
+    script(src='https://code.highcharts.com/modules/data.js')
+    script(src='https://code.highcharts.com/modules/series-label.js')
+    script(src='https://code.highcharts.com/modules/exporting.js')
+    script(src='https://code.highcharts.com/modules/export-data.js')
+    script(src='https://www.highcharts.com/media/com_demo/js/highslide-full.min.js')
+    script(src='https://www.highcharts.com/media/com_demo/js/highslide.config.js', charset='utf-8')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js', integrity='sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs', crossorigin='anonymous')
+    link(rel='stylesheet', type='text/css', href='https://www.highcharts.com/media/com_demo/css/highslide.css')
+    .card.file-form(ng-controller="reportes", ng-init="getFields()")
+        .card-body
+            h2 Generacion de reportes
+            .row
+                .col-sm-3(ng-repeat="field in fields")
+                    label.checkbox-inline
+                        input(type='checkbox', value='{{field.name}}', ng-click="addField(field.name)")
+                        | {{field.name}}
+            br
+            button.btn.btn-success(ng-click="generateReport()") Generar Reporte
+            button.btn.btn-info(ng-click="generatePdf()") Generar PDF
+            br
+            h4(ng-if="cargando") Cargando...
+            table.table.table-striped.table-hover#pdfGenerator(ng-if="reportShow")
+                thead.thead-dark
+                    tr
+                        th(ng-repeat="campo in campos") {{campo}}
+                tbody
+                    tr(ng-repeat="inf in info")
+                        td(ng-repeat="(key, value) in inf") {{value}}
+            h2 Graficas
+        #container(style='width: 97%; min-width: 720px; height: 400px; margin: auto; margin-top: 12px;')
+    script.
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        Highcharts.chart('container', {
+
+            title: {
+                text: 'Reporte de Transacciones'
+            },
+            yAxis: {
+                title: {
+                    text: 'Numero de transacciones'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            xAxis: {
+                categories: months
+            },
+            series: [{
+                name: 'Validas',
+                data: [439, 525, 571, 696, 970, 1099, 1122, 1056, 989, 698, 696, 970]
+            }, {
+                name: 'Invalidas',
+                data: [249, 240, 297, 298, 324, 302, 381, 404, 240, 297, 298, 324],
+                color: 'red'
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+        });
+
+
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+
+block scripts
+    script(src='/javascripts/reportesLogic.js')

@@ -30,6 +30,64 @@ controller.get_files = function (req, res, next, sql) {
 
 }
 
+controller.getProcesses = function (req, res, next, sql) {
+
+    var request = sql.request();
+    request.query("SELECT p.*, CONCAT(e.nombres, ' ', e.apellido_paterno, ' ', e.apellido_materno) as empleado_nombre FROM [dbo].[procesos_corriendo] p INNER JOIN [dbo].[empleados] e ON e.clave = p.empleado_id", function (err, recordset) {
+        if (err) {
+            console.log(err);
+            res.status(401).send(err);
+        } else {
+            var response = recordset.recordset;
+            res.json(response);
+        }
+    });
+
+}
+
+
+controller.initiateProcess = function (req, res, next, sql) {
+
+    var request = sql.request();
+    request.query("INSERT INTO [dbo].[procesos_corriendo] ([empleado_id]) OUTPUT INSERTED.idProceso VALUES ('"+idEmpleado+"')", function (err, recordset) {
+        if (err) {
+            console.log(err);
+            res.status(401).send(err);
+        } else {
+            var response = recordset.recordset;
+            res.json(response);
+        }
+    });
+
+}
+
+controller.endProcess = function (req, res, next, sql) {
+
+    var request = sql.request();
+    request.query("UPDATE [dbo].[procesos_corriendo] SET [fin] = '"+date_format()+"' WHERE idProceso = '"+req.body.idProceso+"'", function (err, recordset) {
+        if (err) {
+            console.log(err);
+            res.status(401).send(err);
+        } else {
+            var response = recordset.recordset;
+            res.json(response);
+        }
+    });
+
+}
+
+function date_format () {
+    now = new Date();
+    year = "" + now.getFullYear();
+    month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+    day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+    hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+    minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+    second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+}
+
+
 controller.get_bitacora = function (req, res, next, sql) {
 
     var request = sql.request();

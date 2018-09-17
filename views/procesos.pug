@@ -1,0 +1,34 @@
+extends navbar
+
+block content
+    .card.file-form(ng-controller="procesos", ng-init="getProcesos()")
+        .card-body
+            .etl-dir
+                table.table.table-striped
+                    thead
+                        tr
+                            th #
+                            th Inicio
+                            th Fin
+                            th Responsable
+                    tbody
+                        tr(ng-if="carga")
+                            td
+                            td
+                                h4 Cargando... 
+                            td
+                        tr(ng-repeat="result in results | orderBy:'-idProceso'")
+                            td {{result.idProceso}}
+                            td {{result.inicio | date:"MMMM d, y, 'a las' h:mm:ss a"}}
+                            td(ng-if="result.fin") {{result.fin | date:"MMMM d, y, 'a las' h:mm:ss a"}}                      
+                            td(ng-if="!result.fin") En proceso
+                            td {{result.empleado_nombre}}                      
+
+                br
+                br
+
+block styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/fileForms.css')
+
+block scripts
+    script(src='/javascripts/procesosLogic.js')

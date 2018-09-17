@@ -28,6 +28,7 @@ block content
                                             .form-group
                                                 label( for="rango.Valor" ) {{rango.Limitador}}:
                                                 input.form-control( type="text", ng-model="rango.Valor", id="rango.Valor", placeholder="Nombre validacion")
+                                    button.btn.btn-warning(ng-click="cambiarRangos(regla_general)") Cambiar valores
                     br
                     br
                     button.btn.btn-primary(ng-click="rubro[validacion.id]=!rubro[validacion.id]") Agregar rubro

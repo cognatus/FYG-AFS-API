@@ -8,13 +8,9 @@ block content
                     .col-sm-9(style='border: 1px solid;')
                         form.form-horizontal(ng-submit="addTransaccion()")
                             .form-group
-                                label.control-label.col-sm-2(for='new_idTransacciones') idTransacciones:
-                                .col-sm-10
-                                    input#new_idTransacciones.form-control(type='text', placeholder='idTransacciones', name='new_idTransacciones', ng-model="new_transaccion.idTransacciones")
-                            .form-group
                                 label.control-label.col-sm-2(for='new_Cliente_idCliente') Cliente_idCliente:
                                 .col-sm-10
-                                    select#new_Cliente_idCliente.form-control(name='new_Cliente_idCliente', ng-model="new_transaccion.Cliente_idCliente")
+                                    select#new_Cliente_idCliente.form-control(name='new_Cliente_idCliente', ng-model="new_transaccion.cliente_numero_de_cliente")
                                         option(ng-repeat="cliente in info.clientes", value="{{cliente.idCliente}}") {{cliente.Nombre}} {{cliente.Apellido_paterno}} {{cliente.Apellido_materno}}
                             .form-group
                                 label.control-label.col-sm-2(for='new_Canal') Canal:
@@ -52,7 +48,7 @@ block content
                             .form-group
                                 label.control-label.col-sm-2(for='new_Beneficiario') Beneficiario:
                                 .col-sm-10
-                                    input#new_Beneficiario.form-control(type='text', placeholder='Beneficiario', name='new_Beneficiario', ng-model="new_transaccion.Beneficiario")
+                                    input#new_Beneficiario.form-control(type='text', placeholder='Beneficiario', name='new_Beneficiario', ng-model="new_transaccion.Nombre_beneficiario")
                             .form-group
                                 label.control-label.col-sm-2(for='new_Corresponsal') Corresponsal:
                                 .col-sm-10
@@ -60,7 +56,7 @@ block content
                             .form-group
                                 label.control-label.col-sm-2(for='new_Monto') Monto:
                                 .col-sm-10
-                                    input#new_Monto.form-control(type='text', placeholder='Monto', name='new_Monto', ng-model="new_transaccion.Monto")
+                                    input#new_Monto.form-control(type='text', placeholder='Monto', name='new_Monto', ng-model="new_transaccion.monto_transaccion")
                             .form-group
                                 label.control-label.col-sm-2(for='new_Ubicacion') Ubicacion:
                                 .col-sm-10
@@ -70,10 +66,14 @@ block content
                                 .col-sm-10
                                     input#new_Estatus.form-control(type='text', placeholder='Estatus', name='new_Estatus', ng-model="new_transaccion.Estatus")
                             .form-group
-                                label.control-label.col-sm-2(for='new_idTipo_validacion_FK') idTipo_validacion_FK:
+                                label.control-label.col-sm-2(for='new_Tipo_de_movimiento') Tipo_transaccion:
                                 .col-sm-10
-                                    select#new_idTipo_validacion_FK.form-control(name='new_idTipo_validacion_FK', ng-model="new_transaccion.idTipo_validacion_FK")
-                                        option(ng-repeat="validacion in info.validaciones", value="{{validacion.idTipo_validacion}}") {{validacion.nombre_validacion}}
+                                    input#new_Tipo_de_movimiento.form-control(type='text', placeholder='Estatus', name='new_Tipo_de_movimiento', ng-model="new_transaccion.Tipo_transaccion")                    
+                            //.form-group
+                            //    label.control-label.col-sm-2(for='new_idTipo_validacion_FK') idTipo_validacion_FK:
+                            //    .col-sm-10
+                            //        select#new_idTipo_validacion_FK.form-control(name='new_idTipo_validacion_FK', ng-model="new_transaccion.idTipo_validacion_FK")
+                            //            option(ng-repeat="validacion in info.validaciones", value="{{validacion.idTipo_validacion}}") {{validacion.nombre_validacion}}
                             .form-group
                                 .col-sm-offset-2.col-sm-10
                                     button.btn.btn-default(type='submit') Agregar

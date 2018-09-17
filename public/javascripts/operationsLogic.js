@@ -39,6 +39,30 @@ app.controller("operaciones", function ($scope, $http, $window, $cookies) {
         )
     }
 
+    vm.cambiarRangos = function(data) {
+        var aux = true;
+        for (let i = 0; i < data.rangos.length; i++) {
+            const element = data.rangos[i];
+            $http({
+                method: 'PUT',
+                url: 'http://localhost:3000/api/rules',
+                data: {id: element.idRangos, valor: element.Valor}
+            }).then(
+                function sucess(data) {
+                    console.log(data);
+                },
+                function error(err) {
+                    console.log(err);
+                    aux = false;
+                    alert('Consulta incorrecta');
+                }
+            );   
+        }
+        if(aux){
+            alert('Datos cambiados con exito');
+        }
+    }
+
     vm.add_rubro = function(validacion){
         $http({
             method: 'POST',

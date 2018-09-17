@@ -1,4 +1,5 @@
 var controller = {};
+var api = require("request");
 
 controller.getRules = function (req, res, next, sql) {
 
@@ -124,7 +125,7 @@ controller.getTransactions = function (req, res, next, sql) {
     var response = {};
 
     var myPromise = new Promise(function(resolve, reject){
-        request.query('SELECT t.*, c.Numero_TDD, c.Numero_cuenta, c.Estatus as cliente_estatus, tv.nombre_validacion FROM [dbo].[transacciones] t INNER JOIN dbo.cliente c on t.Cliente_idCliente = c.idCliente INNER JOIN dbo.tipo_validacion tv on tv.idTipo_validacion = t.idTipo_validacion_FK WHERE t.validada IS NULL', function (err, recordset) {
+        request.query('SELECT t.*, c.Numero_TDD, c.Numero_cuenta, c.Estatus as cliente_estatus, tv.nombre_validacion FROM [dbo].[transacciones] t INNER JOIN dbo.cliente c on t.Cliente_idCliente = c.idCliente INNER JOIN dbo.tipo_validacion tv on tv.idTipo_validacion = t.idTipo_validacion_FK WHERE t.validada IS NULL ORDER BY Fecha_informacion DESC', function (err, recordset) {
             consulta = recordset.recordset;
             if (err || consulta.length < 1) {
                 console.log(err || "Consutla incorrecta");
@@ -223,6 +224,22 @@ controller.getHistoricTransactions = function (req, res, next, sql, sql2) {
     })
 }
 
+controller.cambiarRangos = function (req, res, next, sql) {
+
+    var request = sql.request();
+    var response = {};
+
+    request.query("UPDATE [dbo].[rangos] SET [Valor] = "+req.body.valor+" WHERE [idRangos] = "+req.body.id+"", function (err, recordset) {
+        if (err) {
+            console.log(err || "Consutla incorrecta");
+            res.status(401).send(err || "Consutla incorrecta");
+        } else {
+            res.json(recordset);
+        }
+    });
+
+}
+
 controller.aprobarTransaccion = function (req, res, next, sql) {
 
     var request = sql.request();
@@ -309,8 +326,140 @@ controller.getInfoSimulador = function (req, res, next, sql) {
 }
 
 controller.simulateTransaction = function (req, res, next, sql, sql2) {
+    try {
+        var request = sql.request();
+        var request2 = sql2.request();
+        var obj = req.body;
+        api({
+            uri: "http://localhost:8000/transaction/validate",
+            method: "POST",
+            body: JSON.stringify(obj),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }, function(error, response, body) {
+            body = JSON.parse(body);
+            const fecha = date_format();
+            var consulta = 	"INSERT INTO [dbo].[transaccional]"+
+                    "([fecha_información]"+
+                    ",[cliente_numero_de_cliente]"+
+                    ",[clave_de_transacción]"+
+                    ",[descripción_transacción]"+
+                    ",[transaccionalcol]"+
+                    ",[tipo_transaccion]"+
+                    ",[canal_de_transacción]"+
+                    ",[cve_sucursal]"+
+                    ",[nombre_sucursal_opera]"+
+                    ",[cve_usuario]"+
+                    ",[no_tarjeta]"+
+                    ",[producto]"+
+                    ",[giro]"+
+                    ",[tipo_de_movimiento]"+
+                    ",[moneda]"+
+                    ",[total_transacciones]"+
+                    ",[banco_destino]"+
+                    ",[cuenta_destino]"+
+                    ",[pais_destino]"+
+                    ",[ciudad]"+
+                    ",[nombre_beneficiario]"+
+                    ",[corresponsal]"+
+                    ",[monto_transacción]"+
+                    ",[atm_no_atm])"+
+                "VALUES"+
+                    "('"+fecha+
+                    "','"+(obj['cliente_numero_de_cliente'] == undefined ? '' : obj['cliente_numero_de_cliente'])+
+                    "','"+(obj['clave_de_transacción'] == undefined ? '' : obj['clave_de_transacción'])+
+                    "','"+(body.code >= 0 ? body.msg : body.error)+
+                    "','"+(obj['transaccionalcol'] == undefined ? '' : obj['transaccionalcol'])+
+                    "','"+(obj['Tipo_transaccion'] == undefined ? '' : obj['Tipo_transaccion'])+
+                    "','"+(obj['canal_de_transacción'] == undefined ? '' : obj['canal_de_transacción'])+
+                    "','"+(obj['cve_sucursal'] == undefined ? '' : obj['cve_sucursal'])+
+                    "','"+(obj['nombre_sucursal_opera'] == undefined ? '' : obj['nombre_sucursal_opera'])+
+                    "','"+(obj['cve_usuario'] == undefined ? '' : obj['cve_usuario'])+
+                    "','"+(obj['no_tarjeta'] == undefined ? '' : obj['no_tarjeta'])+
+                    "','"+(obj['producto'] == undefined ? '' : obj['producto'])+
+                    "','"+(obj['giro'] == undefined ? '' : obj['giro'])+
+                    "','"+(obj['tipo_de_movimiento'] == undefined ? '' : obj['tipo_de_movimiento'])+
+                    "','"+(obj['moneda'] == undefined ? '' : obj['moneda'])+
+                    "','"+(obj['total_transacciones'] == undefined ? '' : obj['total_transacciones'])+
+                    "','"+(obj['banco_destino'] == undefined ? '' : obj['banco_destino'])+
+                    "','"+(obj['cuenta_destino'] == undefined ? '' : obj['cuenta_destino'])+
+                    "','"+(obj['pais_destino'] == undefined ? '' : obj['pais_destino'])+
+                    "','"+(obj['ciudad'] == undefined ? '' : obj['ciudad'])+
+                    "','"+(obj['nombre_beneficiario'] == undefined ? '' : obj['nombre_beneficiario'])+
+                    "','"+(obj['corresponsal'] == undefined ? '' : obj['corresponsal'])+
+                    "',"+(obj['monto_transacción'] == undefined ? '' : obj['monto_transacción'])+
+                    ",'"+(obj['atm_no_atm'] == undefined ? '' : obj['atm_no_atm'])+"')";
+            request2.query(consulta, function (err, recordset) {
+                console.log(recordset)
+                if (err) {
+                    console.log(err || "Consutla incorrecta");
+                    res.status(401).send(err || "Consutla incorrecta");
+                } else {
+                    var consulta2 = "INSERT INTO [dbo].[transacciones]" +
+                    "([idTransacciones]" +
+                    ",[Cliente_idCliente]" +
+                    ",[Fecha_informacion]" +
+                    ",[Canal]" +
+                    ",[Clave]" +
+                    ",[Giro]" +
+                    ",[Moneda]" +
+                    ",[Banco_destino]" +
+                    ",[Cuenta_destino]" +
+                    ",[Pais_destino]" +
+                    ",[Ciudad_destino]" +
+                    ",[Beneficiario]" +
+                    ",[Corresponsal]" +
+                    ",[Monto]" +
+                    ",[Ubicacion]" +
+                    ",[Estatus]" +
+                    ",[Descripcion]" +
+                    ",[critizidad]" +
+                    ",[validada]" +
+                    ",[idTipo_validacion_FK])" +
+                "VALUES" +
+                    "('"+(obj['clave_de_transacción'] == undefined ? '' : obj['clave_de_transacción'])+"'" +
+                    ",'"+(obj['cliente_numero_de_cliente'] == undefined ? '' : obj['cliente_numero_de_cliente'])+"'" +
+                    ",'"+fecha+"'" +
+                    ",'"+(obj['canal_de_transacción'] == undefined ? '' : obj['canal_de_transacción'])+"'" +
+                    ",'"+(obj['clave_de_transacción'] == undefined ? '' : obj['clave_de_transacción'])+"'" +
+                    ",'"+(obj['giro'] == undefined ? '' : obj['giro'])+"'" +
+                    ",'"+(obj['moneda'] == undefined ? '' : obj['moneda'])+"'" +
+                    ",'"+(obj['banco_destino'] == undefined ? '' : obj['banco_destino'])+"'" +
+                    ",'"+(obj['cuenta_destino'] == undefined ? '' : obj['cuenta_destino'])+"'" +
+                    ",'"+(obj['pais_destino'] == undefined ? '' : obj['pais_destino'])+"'" +
+                    ",'"+(obj['ciudad'] == undefined ? '' : obj['ciudad'])+"'" +
+                    ",'"+(obj['nombre_beneficiario'] == undefined ? '' : obj['nombre_beneficiario'])+"'" +
+                    ",'"+(obj['corresponsal'] == undefined ? '' : obj['corresponsal'])+"'" +
+                    ",'"+(obj['monto_transacción'] == undefined ? '' : obj['monto_transacción'])+"'" +
+                    ",'"+(obj['transaccionalcol'] == undefined ? 'MX' : obj['transaccionalcol'])+"'" +
+                    ",'"+(obj['Estatus'] == undefined ? 'MX' : obj['Estatus'])+"'" +
+                    ",'"+(body.code >= 0 ? body.msg : body.error)+"'" +
+                    ",'"+(body.code == undefined ? -1 : body.code)+"'" +
+                    ","+(body.code == undefined || body.code < 0 ? null : body.code) +
+                    ",'1')"
+                    request.query(consulta2, function (err, recordset) {
+                        console.log(recordset)
+                        if (err) {
+                            console.log(err || "Consutla incorrecta");
+                            res.status(401).send(err || "Consutla incorrecta");
+                        } else {
+                            res.json(body);
+                        }
+                    });
+                }
+            });
+        });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+/*controller.simulateTransaction = function (req, res, next, sql, sql2) {
     var request = sql.request();
     var data = req.body;
+
+    console.log(data);
 
     var myPromise = new Promise(function(resolve, reject){
         request.query("INSERT INTO [dbo].[transacciones]" +
@@ -481,7 +630,7 @@ controller.simulateTransaction = function (req, res, next, sql, sql2) {
     
     });
     
-}
+}*/
 
 controller.addRubro = function (req, res, next, sql) {
     var request = sql.request();

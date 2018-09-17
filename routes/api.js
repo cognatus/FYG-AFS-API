@@ -3,6 +3,7 @@ var router = express.Router();
 var user = require('../controllers/user');
 var files = require('../controllers/files');
 var rules = require('../controllers/rules');
+var reports = require('../controllers/reports');
 var sql = require('mssql/msnodesqlv8');
 
 //config to dbsqlserver a la base de datos fyg-afs-admin
@@ -84,11 +85,29 @@ router.route('/files_recolec')
 router.route('/files')
   .get(function (req, res, next) {
     files.get_files(req, res, next, db);
-  })
+  });
+
+router.route('/getProcesses')
+  .get(function (req, res, next) {
+    files.getProcesses(req, res, next, db);
+  });
 
 router.route('/rules')
   .get(function (req, res, next) {
     rules.getRules(req, res, next, db);
+  })
+  .put(function (req, res, next) {
+    rules.cambiarRangos(req, res, next, db);
+  });
+
+router.route('/reports_fields')
+  .get(function (req, res, next) {
+    reports.getFields(req, res, next, db2);
+  });
+
+  router.route('/generate_report')
+  .post(function (req, res, next) {
+    reports.generateReport(req, res, next, db2);
   });
 
 router.route('/add_rules')

@@ -204,17 +204,23 @@ app.controller("files", function ($scope, $http, $window, $cookies, fileUpload) 
         }
         $http({
             method: 'POST',
-            url: ruta
+            url: ruta,
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            data:'asdfdghh890'
         }).then(
             function sucess(data) {
-                console.log(data);
                 vm.cargaETL = false;
-                alert('ETL finalizado con exito');
+                console.log(data);
+                //alert('ETL finalizado con exito');
             },
             function error(err) {
                 vm.cargaETL = false;
-                alert('ETL finalizado con exito');
+                console.log(err);
+                //alert('ETL finalizado con exito');
             }
         );
+        $window.location.href = '/procesos';
     };
 });

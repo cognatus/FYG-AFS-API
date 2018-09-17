@@ -22,14 +22,27 @@ app.controller("simulador", function ($scope, $http, $window, $cookies) {
 
     //metodo para añadir usuario
     vm.addTransaccion = function () {
+        vm.new_transaccion.monto_transacción = parseInt(vm.new_transaccion.monto_transaccion);
+        vm.new_transaccion.canal_de_transacción = vm.new_transaccion.Canal;
+        vm.new_transaccion.clave_de_transacción = vm.new_transaccion.Clave;
+        console.log(vm.new_transaccion)
         $http({
             method: 'POST',
+            //url: 'http://localhost:8000/transaction/validate',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             url: 'http://localhost:3000/api/simulador',
             data: vm.new_transaccion
         }).then(
             function sucess(data) {
                 console.log(data);
-                alert('Transaccion agregado correctamente');
+                let result = data.data; 
+                if(result.code >= 0){
+                    alert(result.msg);
+                }else {
+                    alert('Consulta incorrecta: '+result.error);
+                }
             },
             function error(err) {
                 console.log(err);
