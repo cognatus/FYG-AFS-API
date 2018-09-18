@@ -6,6 +6,11 @@ Requeriments
 
 -NPM 5.6.0 or stable
 
+-nodemon 1.18.4 or stable
+```bash
+$ npm install -g nodemon
+```
+
 -SQL Server 2017
 
 -Have this repo cloned
