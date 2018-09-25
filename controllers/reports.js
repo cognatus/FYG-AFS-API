@@ -4,9 +4,9 @@ controller.getFields = function (req, res, next, sql) {
 
     var request = sql.request();
     var response = {};
+    var table = getTable(req.query.table);
 
-    request.query("SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('[dbo].[transaccional]')", function (err, recordset) {
-        console.log(recordset);
+    request.query("SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('[dbo].["+table+"]')", function (err, recordset) {
         consulta = recordset.recordset;
         if (err || consulta.length < 1) {
             console.log(err || "Consutla incorrecta");
@@ -22,11 +22,9 @@ controller.generateReport = function (req, res, next, sql) {
 
     var request = sql.request();
     var response = {};
+    var table = getTable(req.body.table);
 
-    console.log("SELECT "+req.body.fields+" FROM [dbo].[transaccional]");
-
-    request.query("SELECT "+req.body.fields.toString()+" FROM [dbo].[transaccional]", function (err, recordset) {
-        console.log(recordset);
+    request.query("SELECT "+req.body.fields.toString()+" FROM [dbo].["+table+"]", function (err, recordset) {
         consulta = recordset.recordset;
         if (err || consulta.length < 1) {
             console.log(err || "Consutla incorrecta");
@@ -38,6 +36,37 @@ controller.generateReport = function (req, res, next, sql) {
         }
     });
 
+}
+
+var getTable = function (ref) {
+    var table = '';
+    switch (ref) {
+        case '0':
+            table = "transaccional"
+            break;
+        case '1':
+            table = "atm"
+            break;
+        case '2':
+            table = "cliente"
+            break;
+        case '3':
+            table = "credito"
+            break;
+        case '4':
+            table = "fondos_de_inversion"
+            break;
+        case '5':
+            table = "liquidacion_de_prosa"
+            break;
+        case '6':
+            table = "productos_por_cliente"
+            break;
+        default:
+            table = "transaccional"
+            break;
+    }
+    return table;
 }
 
 module.exports = controller;

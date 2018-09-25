@@ -13,7 +13,8 @@ app.controller("navbar", function ($scope, $http, $window, $cookies) {
         { opc: 'Home', url: "/", rol: [], uso: "0" },
         { opc: 'Reportes', url: "/reportes", rol: [1, 3], uso: "1" },
         { opc: 'Usuarios', url: "/usuarios", rol: [1], uso: "2" },
-        { opc: 'Opreaciones Detenidas', url: "/operaciones", rol: [1, 2], uso: "3" },
+        { opc: 'Transacciones Detenidas', url: "/transacciones_detenidas", rol: [1, 2], uso: "3" },
+        { opc: 'Reglas', url: "/operaciones", rol: [1, 2], uso: "3" },
         { opc: 'Bitacora', url: "/bitacora", rol: [1, 2], uso: "4" }
     ];
 

@@ -10,12 +10,17 @@ app.controller("reportes", function ($scope, $http, $window, $cookies) {
     vm.info = [];
     vm.reportShow = false;
     vm.cargando = false;
+    vm.tableinfo = "0";
 
     vm.getFields = function () {
+        vm.fields = [];
+        vm.campos = [];
+        vm.info = [];
+        vm.fieldCheck = [];
         vm.userLog = $cookies.getObject('usuario');
         $http({
             method: 'GET',
-            url: 'http://localhost:3000/api/reports_fields'
+            url: 'http://localhost:3000/api/reports_fields?table='+vm.tableinfo
         }).then(
             function sucess(data) {
                 vm.fields = data.data;
@@ -29,7 +34,6 @@ app.controller("reportes", function ($scope, $http, $window, $cookies) {
 
     vm.addField = function (field) {
         vm.fieldCheck.push(field);
-        console.log(vm.fieldCheck);
     }
 
     vm.generateReport = function() {
@@ -37,7 +41,7 @@ app.controller("reportes", function ($scope, $http, $window, $cookies) {
         $http({
             method: 'POST',
             url: 'http://localhost:3000/api/generate_report',
-            data: {fields: vm.fieldCheck}
+            data: {fields: vm.fieldCheck, table: vm.tableinfo}
         }).then(
             function sucess(data) {
                 vm.campos = data.data.campos;

@@ -15,6 +15,16 @@ block content
     .card.file-form(ng-controller="reportes", ng-init="getFields()")
         .card-body
             h2 Generacion de reportes
+            .form-group
+                label( for="table_info" )
+                select.form-control( id="table_info", ng-model="tableinfo", ng-change="getFields()")
+                    option(value="0") TRANSACCIONES
+                    option(value="1") ATM
+                    option(value="2") CLIENTE
+                    option(value="3") CREDITO
+                    option(value="4") FONDOS DE INVERSION
+                    option(value="5") LIQUIDACION PROSA
+                    option(value="6") PRODUCTOS CLIENTE
             .row
                 .col-sm-3(ng-repeat="field in fields")
                     label.checkbox-inline
